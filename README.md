@@ -61,10 +61,11 @@ All processing conducted at 30m spatial resolution.
 *See /outputs folder for full resolution maps*
 
 ### Land Surface Temperature — Melbourne, February 2020
-![LST Map](outputs/MEL_06_Land_Surface_Temperature_Feb2020.png)
+![LST Map](outputs/MEL_Land_Surface_Temperature_Feb2020.png)
 
 ### NDVI — Melbourne, February 2020
-![NDVI Map](outputs/MEL_03_NDVI_Feb2020.png)
+![NDVI Map](outputs/MEL_NDVI_Feb2020.png)
+
 
 ---
 
