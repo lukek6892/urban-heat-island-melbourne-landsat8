@@ -4,24 +4,29 @@
 **Author:** Luke Kennedy
 **Date:** June 2026
 **Tools:** ArcGIS Pro, USGS EarthExplorer
-**Data:** Landsat 8 Collection 2 Level-1 (USGS), ABS Greater Melbourne Boundary
+**Data:** Landsat 8 Collection 2 Level-1 (USGS), ABS Greater Melbourne Boundary (GCCSA)
 
 ---
 
 ## Overview
-This project derives and analyses Land Surface Temperature (LST) across Greater Melbourne 
-using Landsat 8 Band 10 thermal infrared imagery. The analysis follows a six-step 
-processing chain to quantify surface temperature variation across the metropolitan area, 
-identifying urban heat island patterns and the moderating role of vegetation and water bodies.
 
-The scene used is from **February 2020**, representing Melbourne's late summer thermal 
-peak. The study area is clipped to the Greater Capital City Statistical Area (GCCSA) 
-boundary for Greater Melbourne.
+This project derives and analyses Land Surface Temperature (LST) across western and
+central Greater Melbourne using Landsat 8 Band 10 thermal infrared imagery. A six-step
+processing chain was implemented in ArcGIS Pro Spatial Analyst to quantify surface
+temperature variation across the metropolitan area, identifying urban heat island
+patterns and the moderating role of vegetation and water bodies.
+
+The scene used is **23 February 2020**, capturing Melbourne's late-summer thermal peak.
+The study area is clipped to the Greater Capital City Statistical Area (GCCSA) boundary,
+though the Landsat scene footprint (LC08_L1TP_092086_20200223) covers the western and
+central portions of Greater Melbourne only — eastern suburbs and the Dandenong Ranges
+fringe fall outside the scene extent and are excluded from this analysis.
 
 ---
 
 ## Methodology
-The following six-step processing chain was applied in ArcGIS Pro Spatial Analyst 
+
+The following six-step processing chain was applied in ArcGIS Pro Spatial Analyst
 Raster Calculator:
 
 | Step | Output | Formula |
@@ -33,12 +38,13 @@ Raster Calculator:
 | 5 | Land Surface Emissivity | `LSE = 0.004 × Pv + 0.986` |
 | 6 | Land Surface Temperature | `LST = BT / (1 + (0.00115 × BT / 1.4388) × Ln(LSE))` |
 
-Thermal constants used: K1 = 774.8853, K2 = 1321.0789 (Landsat 8 Band 10).
+Thermal constants: K1 = 774.8853, K2 = 1321.0789 (Landsat 8 Band 10).
 All processing conducted at 30m spatial resolution.
 
 ---
 
 ## Data Sources
+
 - **Landsat 8 OLI/TIRS Collection 2 Level-1** — USGS EarthExplorer (earthexplorer.usgs.gov)
   - Scene: LC08_L1TP_092086_20200223
   - Bands used: Band 4 (Red), Band 5 (NIR), Band 10 (TIR)
@@ -47,40 +53,70 @@ All processing conducted at 30m spatial resolution.
 ---
 
 ## Key Findings
-- LST across Greater Melbourne ranged from approximately **13.24°C to 37.80°C** in February 2020
-- The urban core and western suburbs exhibited the highest surface temperatures, 
-  consistent with high impervious surface density and limited canopy cover
-- The Yarra Valley, Dandenong Ranges fringe, and Port Phillip Bay coastline acted 
-  as primary thermal buffers, registering the lowest LST values in the scene
-- NDVI is a strong inverse predictor of LST — suburbs with higher vegetation 
-  fraction showed measurably lower surface temperatures
+
+- LST ranged from **13.24°C to 37.80°C** across the study area in February 2020 —
+  a thermal range of 24.56°C within the western and central metropolitan footprint
+- Melbourne's western growth corridors (Sunshine, Werribee, Melton) record the
+  highest surface temperatures, driven by high impervious surface density and
+  limited canopy cover
+- **Port Phillip Bay** exerts the most spatially prominent cooling effect in the
+  scene, with LST values along the foreshore well below the surrounding urban fabric
+- A large cool zone in the northern portion of the scene corresponds to forested
+  areas north of Melbourne's urban boundary (Kinglake / Toolangi State Forest),
+  where dense vegetation and elevation suppress surface temperatures
+- The **Yarra River corridor** produces a visible linear cooling effect through
+  the inner suburbs
+- NDVI is a strong inverse predictor of LST — suburbs with higher vegetation
+  fraction show measurably lower surface temperatures
+- Eastern suburbs (Kew, Hawthorn, Frankston) and the Dandenong Ranges fall
+  outside the scene footprint and are not captured in this analysis
 
 ---
 
 ## Map Outputs
-*See /outputs folder for full resolution maps*
 
 ### Land Surface Temperature — Melbourne, February 2020
-![LST Map](MEL_Land_Surface_Temperature_Feb2020.png)
+![LST Map](outputs/MEL_Land_Surface_Temperature_Feb2020.png)
 
 ### NDVI — Melbourne, February 2020
-![NDVI Map](MEL_NDVI_Feb2020.png)
-
+![NDVI Map](outputs/MEL_NDVI_Feb2020.png)
 
 ---
 
 ## Policy Context
-Melbourne faces a well-documented urban heat challenge. The **City of Melbourne Urban 
-Forest Strategy** and **Victorian Urban Cooling Strategy** both identify surface 
-temperature reduction as a priority. This analysis provides evidence of the spatial 
-distribution of heat across the metropolitan area, supporting the case for targeted 
-greening interventions in Melbourne's western and northern growth corridors.
+
+Melbourne faces a well-documented urban heat challenge. The **City of Melbourne
+Urban Forest Strategy** (40% canopy cover target by 2040) and the **Victorian
+Urban Cooling Strategy** both identify surface temperature reduction as a priority.
+This analysis provides spatial evidence of the heat distribution across Melbourne's
+western and central suburbs, supporting the case for targeted greening and cool
+surface interventions in the city's most heat-exposed growth corridors.
+
+---
+
+## Limitations
+
+- The Landsat scene footprint does not fully cover the Greater Melbourne GCCSA
+  boundary — eastern suburbs and the Dandenong Ranges fringe are excluded.
+  A complete metropolitan analysis would require mosaicking an adjacent scene tile
+- Landsat 8 Band 10 is resampled from 100m native resolution to 30m, introducing
+  sub-pixel averaging that may smooth fine-scale thermal variation
+- Single-date snapshot only — does not account for diurnal or inter-annual variability
+- Simplified emissivity model (two-endmember approach); no full atmospheric correction
 
 ---
 
 ## Repository Structure
+
 ```
 /outputs        ← exported map images (PNG, 300 DPI)
 /docs           ← PDF report
 README.md
 ```
+
+---
+
+## Full Report
+
+A complete PDF report structured as a professional consultant deliverable is
+available in the `/docs` folder.
